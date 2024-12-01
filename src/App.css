@@ -1,0 +1,7 @@
+h1 {
+  text-align: center;
+  & span {
+    color: #673ab7;
+    text-shadow: 0 0 3px #ffffff;
+  }
+}
