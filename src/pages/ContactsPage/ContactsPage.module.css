@@ -1,0 +1,6 @@
+.box {
+  min-width: 340px;
+  max-width: 550px;
+  margin: 0 auto;
+  padding: 10px 0;
+}

@@ -1,16 +1,44 @@
+#root {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+:root {
+  --c-bg-top: #f8ebff;
+  --c-bg-bottom: #ffffff;
+  --c-header-color: #6f3bb4;
+  --c-btn-bg: #371466;
+  --c-btn-bg-hover: #20083f;
+  .css-1abvrni-MuiButtonBase-root-MuiButton-root {
+    background-color: var(--c-btn-bg);
+    &:hover {
+      background-color: var(--c-btn-bg-hover);
+    }
+  }
+}
+
 html {
   box-sizing: border-box;
   scroll-behavior: smooth;
   min-height: 100vh;
   position: relative;
 }
-
 body {
   min-width: 340px;
-  max-width: 500px;
+  max-width: 1280px;
   margin: 0 auto;
-  font-family: "Play", sans-serif;
-  background: linear-gradient(to bottom, #889cdb, #6f757a);
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  background: linear-gradient(
+    -45deg,
+    var(--c-bg-top),
+    #ba70eb,
+    var(--c-bg-bottom),
+    #cd83f8
+  );
+  background-size: 400% 400%;
+  animation: gradient 10s ease infinite;
+  height: 100vh;
   padding: 0 15px;
   font-style: normal;
 }
@@ -52,4 +80,16 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }

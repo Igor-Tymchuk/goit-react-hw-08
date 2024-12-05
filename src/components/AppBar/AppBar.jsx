@@ -1,12 +1,22 @@
-import { NavLink } from "react-router-dom";
+import { Switch } from "@mui/material";
+import s from "./AppBar.module.css";
+
+import Navigation from "../Navigation/Navigation";
+import AuthNav from "../AuthNav/AuthNav";
+import { useSelector } from "react-redux";
+import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import UserMenu from "../UserMenu/UserMenu";
 
 const AppBar = () => {
+  const isLogged = useSelector(selectIsLoggedIn);
   return (
-    <div>
-      <NavLink to="/">Home</NavLink>
-      <NavLink to="contacts">Contacts</NavLink>
-      <NavLink to="login">Login</NavLink>
-    </div>
+    <header id="header" className={s.header}>
+      <Switch color="black" aria-label="theme switch" />
+      <div className={s.nav}>
+        <Navigation />
+        {isLogged ? <UserMenu /> : <AuthNav />}
+      </div>
+    </header>
   );
 };
 export default AppBar;

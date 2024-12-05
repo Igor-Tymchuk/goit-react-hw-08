@@ -3,9 +3,9 @@ import * as Yup from "yup";
 import s from "./ContactForm.module.css";
 import { useId } from "react";
 import { MdPersonAddAlt1 } from "react-icons/md";
-import { nanoid } from "@reduxjs/toolkit";
-import { addContact } from "../../redux/contactsOps";
+import { addContact } from "../../redux/contacts/operations";
 import { useDispatch } from "react-redux";
+import toast from "react-hot-toast";
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
@@ -19,7 +19,6 @@ const FeedbackSchema = Yup.object().shape({
 });
 
 const emptyValues = {
-  id: "",
   name: "",
   number: "",
 };
@@ -31,9 +30,12 @@ const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
-    const data = { ...values, id: nanoid(4) };
+    toast.promise(dispatch(addContact(values)).unwrap(), {
+      loading: "Create contact...",
+      success: <b>{values.name} was successfully created!</b>,
+      error: <b>Error creating contact!</b>,
+    });
     actions.resetForm();
-    dispatch(addContact(data));
   };
 
   return (

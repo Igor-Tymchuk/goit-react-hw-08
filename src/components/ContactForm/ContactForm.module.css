@@ -2,10 +2,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
   padding: 20px 10px;
   background-color: #ffffff;
   border-radius: 10px;
   box-shadow: 0 0 10px 1px #ffffff;
+  box-sizing: border-box;
 }
 .labelBox {
   display: flex;

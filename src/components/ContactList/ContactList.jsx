@@ -5,8 +5,8 @@ import {
   selectError,
   selectFilteredContacts,
   selectTotalContacts,
-} from "../../redux/contactsSlice";
-import { selectNameFilter } from "../../redux/filtersSlice";
+} from "../../redux/contacts/selectors";
+import { selectNameFilter } from "../../redux/filters/selectors";
 
 const ContactList = () => {
   const filter = useSelector(selectNameFilter);

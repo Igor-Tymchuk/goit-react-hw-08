@@ -1,49 +1,56 @@
-// import { useDispatch, useSelector } from "react-redux";
 import "./App.css";
-// import ContactForm from "./components/ContactForm/ContactForm";
-// import ContactList from "./components/ContactList/ContactList";
-// import SearchBox from "./components/SearchBox/SearchBox";
-// import { fetchContacts } from "./redux/contactsOps";
-// import { selectError, selectIsLoading } from "./redux/contactsSlice";
-// import { useEffect } from "react";
-// import Loader from "./components/Loader/Loader";
 import { Route, Routes } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
-import HomePage from "./pages/HomePage";
-import ContactsPage from "./pages/ContactsPage";
-import RegistrationPage from "./pages/RegistrationPage";
-import LoginPage from "./pages/LoginPage";
-import ErrorPage from "./pages/ErrorPage";
+import HomePage from "./pages/HomePage/HomePage";
+import ContactsPage from "./pages/ContactsPage/ContactsPage";
+import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import ErrorPage from "./pages/ErrorPage/ErrorPage";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsRefreshing } from "./redux/auth/selectors";
+import { refreshUser } from "./redux/auth/operations";
+import Loader from "./components/Loader/Loader";
+import { RestrictedRoute } from "./components/RestrictedRoute";
+import { PrivateRoute } from "./components/PrivateRoute";
 
 const App = () => {
-  // const dispatch = useDispatch();
-  // const loader = useSelector(selectIsLoading);
-  // const error = useSelector(selectError);
+  const dispatch = useDispatch();
+  const isRefreshing = useSelector(selectIsRefreshing);
 
-  // useEffect(() => {
-  //   dispatch(fetchContacts());
-  // }, [dispatch]);
-
-  return (
-    <div>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<HomePage />} />
-          <Route path="contacts" element={<ContactsPage />} />
-          <Route path="register" element={<RegistrationPage />} />
-          <Route path="login" element={<LoginPage />} />
-          <Route path="*" element={<ErrorPage />} />
-        </Route>
-      </Routes>
-
-      {/* <h1>
-        Phone<span>book</span>
-      </h1>
-      <ContactForm />
-      <SearchBox />
-      {loader && !error && <Loader />}
-      <ContactList /> */}
-    </div>
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
+  return isRefreshing ? (
+    <Loader />
+  ) : (
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route
+          path="contacts"
+          element={
+            <PrivateRoute redirectTo="/login" component={<ContactsPage />} />
+          }
+        />
+        <Route
+          path="register"
+          element={
+            <RestrictedRoute
+              redirectTo="/contacts"
+              component={<RegistrationPage />}
+            />
+          }
+        />
+        <Route
+          path="login"
+          element={
+            <RestrictedRoute redirectTo="/contacts" component={<LoginPage />} />
+          }
+        />
+        <Route path="*" element={<ErrorPage />} />
+      </Route>
+    </Routes>
   );
 };
 

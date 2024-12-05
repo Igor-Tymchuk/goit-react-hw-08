@@ -1,0 +1,16 @@
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10px;
+  & span {
+    font-weight: bold;
+  }
+}
+.box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid white;
+  border-radius: 5px;
+}
