@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import s from "./Navigation.module.css";
 import { useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
+import { FcBusinessContact } from "react-icons/fc";
 
 const Navigation = () => {
   const isLogged = useSelector(selectIsLoggedIn);
@@ -12,6 +13,7 @@ const Navigation = () => {
   };
   return (
     <nav>
+      <FcBusinessContact className={s.logo} />
       <NavLink className={linkNav} to="/">
         <ListItemButton>Home</ListItemButton>
       </NavLink>

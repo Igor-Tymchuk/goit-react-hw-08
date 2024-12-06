@@ -5,11 +5,8 @@
   min-height: 100vh;
 }
 :root {
-  --c-bg-top: #f8ebff;
-  --c-bg-bottom: #ffffff;
-  --c-header-color: #6f3bb4;
-  --c-btn-bg: #371466;
-  --c-btn-bg-hover: #20083f;
+  --c-bg-top: #a1a2af;
+  --c-header-color: #271f6e;
 }
 
 html {
@@ -23,13 +20,7 @@ body {
   max-width: 1280px;
   margin: 0 auto;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  background: linear-gradient(
-    -45deg,
-    var(--c-bg-top),
-    #ba70eb,
-    var(--c-bg-bottom),
-    #cd83f8
-  );
+  background: var(--c-bg-top);
   background-size: 400% 400%;
   animation: gradient 10s ease infinite;
   height: 100vh;
@@ -74,16 +65,4 @@ img {
   display: block;
   max-width: 100%;
   height: auto;
-}
-
-@keyframes gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
 }

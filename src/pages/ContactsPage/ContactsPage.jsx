@@ -17,9 +17,6 @@ const ContactsPage = () => {
   }, [dispatch]);
   return (
     <div className={s.box}>
-      <h1>
-        Phone<span>book</span>
-      </h1>
       <ContactForm />
       <SearchBox />
       {loader && !error && <Loader />}

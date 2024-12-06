@@ -16,3 +16,4 @@ export const selectFilteredContacts = createSelector(
   }
 );
 export const selectEditData = (state) => state.contacts.editData;
+export const selectDeleteData = (state) => state.contacts.deleteData;

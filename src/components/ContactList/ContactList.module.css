@@ -7,8 +7,9 @@
 .counter {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 10px;
   & p {
-    color: #1a0441;
+    color: black;
     & span {
       font-weight: bold;
     }

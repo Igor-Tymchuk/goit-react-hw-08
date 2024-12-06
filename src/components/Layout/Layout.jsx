@@ -12,17 +12,16 @@ const Layout = () => {
       <Toaster
         toastOptions={{
           style: {
-            border: "1px solid white",
             color: "white",
           },
           success: {
             style: {
-              background: "green",
+              background: "darkgreen",
             },
           },
           error: {
             style: {
-              background: "red",
+              background: "darkred",
             },
           },
         }}

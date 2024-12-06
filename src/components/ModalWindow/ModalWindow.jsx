@@ -6,6 +6,8 @@ import { setEditData } from "../../redux/contacts/slice";
 import { selectEditData } from "../../redux/contacts/selectors";
 import toast from "react-hot-toast";
 import { editContact } from "../../redux/contacts/operations";
+import * as Yup from "yup";
+import { FaUserEdit } from "react-icons/fa";
 
 const style = {
   position: "absolute",
@@ -13,20 +15,32 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   boxSizing: "border-box",
-  maxWidth: "500px",
-  minWidth: "275px",
-  width: "100%",
+  width: "340px",
   bgcolor: "background.paper",
   borderRadius: "5px",
   boxShadow: 24,
   p: 4,
 };
 
+const FeedbackSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(3, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  number: Yup.string()
+    .min(3, "Too Short!")
+    .max(50, "Too Long")
+    .required("Required"),
+});
+
 const ModalWindow = () => {
   const dispatch = useDispatch();
   const editData = useSelector(selectEditData);
   const handleClose = () => dispatch(setEditData(null));
   const handleEdit = (values, actions) => {
+    if (editData.name === values.name && editData.number === values.number) {
+      return toast.error("You did not edit...");
+    }
     toast.promise(dispatch(editContact(values)).unwrap(), {
       loading: "Editing...",
       success: <b>The contact was successfully edited.</b>,
@@ -40,7 +54,7 @@ const ModalWindow = () => {
     editData && (
       <Modal open={Boolean(editData)} onClose={handleClose}>
         <Box sx={style}>
-          <h2>Contact Editor</h2>
+          <h2 className={s.title}>Contact Editor</h2>
           <Formik
             onSubmit={handleEdit}
             initialValues={{
@@ -48,38 +62,45 @@ const ModalWindow = () => {
               name: editData.name,
               number: editData.number,
             }}
+            validationSchema={FeedbackSchema}
           >
-            <Form className={s.form}>
-              <Field name="name">
-                {({ field }) => (
-                  <TextField
-                    sx={{ width: "100%" }}
-                    {...field}
-                    label="Name"
-                    type="text"
-                    variant="filled"
-                  />
-                )}
-              </Field>
-              <Field name="number">
-                {({ field }) => (
-                  <TextField
-                    sx={{ width: "100%" }}
-                    {...field}
-                    label="Phone number"
-                    type="text"
-                    variant="filled"
-                  />
-                )}
-              </Field>
-              <Button
-                type="submit"
-                variant="contained"
-                sx={{ width: "100%", height: "50px", marginTop: "15px" }}
-              >
-                Edit
-              </Button>
-            </Form>
+            {({ errors, touched }) => (
+              <Form className={s.form}>
+                <Field name="name">
+                  {({ field }) => (
+                    <TextField
+                      error={Boolean(touched.name && errors.name)}
+                      sx={{ width: "100%" }}
+                      {...field}
+                      label="Username"
+                      variant="outlined"
+                      helperText={
+                        touched.name && errors.name ? errors.name : " "
+                      }
+                    />
+                  )}
+                </Field>
+                <Field name="number">
+                  {({ field }) => (
+                    <TextField
+                      error={Boolean(touched.number && errors.number)}
+                      sx={{ width: "100%" }}
+                      {...field}
+                      label="Phone number"
+                      variant="outlined"
+                      helperText={
+                        touched.number && errors.number ? errors.number : " "
+                      }
+                    />
+                  )}
+                </Field>
+
+                <Button type="submit" className={s.btn} variant="contained">
+                  <FaUserEdit />
+                  Edit contact
+                </Button>
+              </Form>
+            )}
           </Formik>
         </Box>
       </Modal>

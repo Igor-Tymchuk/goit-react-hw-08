@@ -20,12 +20,19 @@ const slice = createSlice({
   initialState: {
     items: [],
     editData: null,
+    deleteData: null,
     loading: false,
     error: null,
   },
   reducers: {
     setEditData(state, action) {
       state.editData = action.payload;
+    },
+    setDeleteData(state, action) {
+      state.deleteData = action.payload;
+    },
+    prepare(button) {
+      return button;
     },
   },
   extraReducers: (builder) => {
@@ -57,5 +64,5 @@ const slice = createSlice({
       });
   },
 });
-export const { setEditData } = slice.actions;
+export const { setEditData, setDeleteData } = slice.actions;
 export default slice.reducer;

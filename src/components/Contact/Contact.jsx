@@ -2,15 +2,26 @@ import s from "./Contact.module.css";
 import { FaTrashAlt, FaUserEdit } from "react-icons/fa";
 import { MdPhone } from "react-icons/md";
 import { BsPersonFill } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteContact } from "../../redux/contacts/operations";
 import toast from "react-hot-toast";
-import { setEditData } from "../../redux/contacts/slice";
-import { Popover } from "@mui/material";
-import { useState } from "react";
+import { setDeleteData, setEditData } from "../../redux/contacts/slice";
+import { ListItem, ListItemButton, Popover } from "@mui/material";
+import { selectDeleteData } from "../../redux/contacts/selectors";
+import { useRef } from "react";
+
+const style = {
+  boxSizing: "border-box",
+  bgcolor: "background.paper",
+  borderRadius: "5px",
+  boxShadow: 24,
+  p: 1,
+};
 
 const Contact = ({ contact }) => {
   const dispatch = useDispatch();
+  const buttonRef = useRef(null);
+  const isDelete = useSelector(selectDeleteData);
 
   const openEdit = (contact) => {
     dispatch(setEditData(contact));
@@ -22,72 +33,73 @@ const Contact = ({ contact }) => {
       success: <b>{name} was successfully deleted.</b>,
       error: <b>Error! Could not delete.</b>,
     });
+    dispatch(setDeleteData(null));
   };
 
-  const [anchorEl, setAnchorEl] = useState(false);
-
-  const handleClick = (e) => {
-    console.log(e);
-    setAnchorEl(e.currentTarget);
+  const handleClick = () => {
+    if (buttonRef.current) {
+      const rect = buttonRef.current.getBoundingClientRect();
+      dispatch(
+        setDeleteData({
+          top: rect.top + window.scrollY + 19,
+          left: rect.left + window.scrollX - 19,
+        })
+      );
+    }
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    dispatch(setDeleteData(null));
   };
-
-  const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
-
   return (
-    <li className={s.listItem}>
-      <div className={s.itemBox}>
-        <p className={s.name}>
-          <BsPersonFill className={s.icon} />
-          {contact.name}
-        </p>
-        <p className={s.number}>
-          <MdPhone className={s.icon} />
-          {contact.number}
-        </p>
-      </div>
-      <div>
-        <button onClick={() => openEdit(contact)} className={s.btnEdit}>
-          <FaUserEdit />
-        </button>
-
-        {/* <button onClick={() => handleDelete(contact)} className={s.btn}> */}
-        <button onClick={handleClick} className={s.btn}>
-          <FaTrashAlt />
-        </button>
-      </div>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        className={s.popover}
-        anchorOrigin={{
-          vertical: "center",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "center",
-          horizontal: "center",
-        }}
-        sx={{
-          "& .MuiPaper-root": {
-            backgroundColor: "transparent",
-            boxShadow: "none",
-          },
-        }}
+    <ListItem disablePadding sx={style}>
+      <ListItemButton
+        sx={{ display: "flex", justifyContent: "space-between", p: 1 }}
       >
-        <button onClick={() => handleDelete(contact)} className={s.btn}>
-          Confirm
-          <br />
-          delete?
-        </button>
-      </Popover>
-    </li>
+        <div className={s.itemBox}>
+          <p className={s.name}>
+            <BsPersonFill className={s.icon} />
+            {contact.name}
+          </p>
+          <p className={s.number}>
+            <MdPhone className={s.icon} />
+            {contact.number}
+          </p>
+        </div>
+        <div className={s.buttons}>
+          <button onClick={() => openEdit(contact)} className={s.btnEdit}>
+            <FaUserEdit />
+          </button>
+
+          <button ref={buttonRef} onClick={handleClick} className={s.btn}>
+            <FaTrashAlt />
+          </button>
+        </div>
+        <Popover
+          open={Boolean(isDelete)}
+          anchorReference="anchorPosition"
+          anchorPosition={isDelete}
+          onClose={handleClose}
+          className={s.popover}
+          transformOrigin={{
+            vertical: "center",
+            horizontal: "center",
+          }}
+          sx={{
+            "& .MuiPaper-root": {
+              backgroundColor: "transparent",
+              boxShadow: "none",
+            },
+          }}
+        >
+          <button onClick={() => handleDelete(contact)} className={s.btn}>
+            Confirm delete?
+            <br />
+            {contact.name}
+          </button>
+        </Popover>
+      </ListItemButton>
+    </ListItem>
   );
 };
 

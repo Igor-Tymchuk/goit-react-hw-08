@@ -14,7 +14,7 @@ const ContactList = () => {
   const filteredContacts = useSelector(selectFilteredContacts);
   const error = useSelector(selectError);
   return !error ? (
-    <>
+    <div>
       <div className={s.counter}>
         <p className={s.total}>
           Contacts: <span>{totalCount}</span>
@@ -30,7 +30,7 @@ const ContactList = () => {
           <Contact key={contact.id} contact={contact} />
         ))}
       </ul>
-    </>
+    </div>
   ) : (
     <div className={s.error}>
       <p>Oops...</p>

@@ -1,12 +1,11 @@
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import s from "./ContactForm.module.css";
-import { useId } from "react";
 import { MdPersonAddAlt1 } from "react-icons/md";
 import { addContact } from "../../redux/contacts/operations";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
-import { Button, TextField } from "@mui/material";
+import { Box, Button, TextField } from "@mui/material";
+import s from "./ContactForm.module.css";
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
@@ -24,10 +23,15 @@ const emptyValues = {
   number: "",
 };
 
-const ContactForm = () => {
-  const idName = useId();
-  const idNumber = useId();
+const style = {
+  boxSizing: "border-box",
+  bgcolor: "background.paper",
+  borderRadius: "5px",
+  boxShadow: 24,
+  p: 4,
+};
 
+const ContactForm = () => {
   const dispatch = useDispatch();
 
   const handleSubmit = (values, actions) => {
@@ -46,39 +50,42 @@ const ContactForm = () => {
       validationSchema={FeedbackSchema}
     >
       {({ errors, touched }) => (
-        <Form className={s.form}>
-          <Field name="name" id={idName}>
-            {({ field }) => (
-              <TextField
-                error={touched.name && errors.name}
-                sx={{ width: "100%" }}
-                {...field}
-                label="Username"
-                variant="filled"
-                helperText={touched.name && errors.name ? errors.name : " "}
-              />
-            )}
-          </Field>
-          <Field name="number" id={idNumber}>
-            {({ field }) => (
-              <TextField
-                error={touched.number && errors.number}
-                sx={{ width: "100%" }}
-                {...field}
-                label="Phone number"
-                variant="filled"
-                helperText={
-                  touched.number && errors.number ? errors.number : " "
-                }
-              />
-            )}
-          </Field>
+        <Box sx={style}>
+          <h2 className={s.title}>Add new contact:</h2>
+          <Form className={s.form}>
+            <Field name="name">
+              {({ field }) => (
+                <TextField
+                  sx={{ width: "100%" }}
+                  {...field}
+                  label="Username"
+                  variant="outlined"
+                  error={Boolean(touched.name && errors.name)}
+                  helperText={touched.name && errors.name ? errors.name : " "}
+                />
+              )}
+            </Field>
+            <Field name="number">
+              {({ field }) => (
+                <TextField
+                  sx={{ width: "100%" }}
+                  {...field}
+                  label="Phone number"
+                  variant="outlined"
+                  error={Boolean(touched.number && errors.number)}
+                  helperText={
+                    touched.number && errors.number ? errors.number : " "
+                  }
+                />
+              )}
+            </Field>
 
-          <Button type="submit" className={s.btn} variant="contained">
-            <MdPersonAddAlt1 />
-            Add contact
-          </Button>
-        </Form>
+            <Button type="submit" variant="contained">
+              <MdPersonAddAlt1 />
+              &nbsp;Add contact
+            </Button>
+          </Form>
+        </Box>
       )}
     </Formik>
   );
