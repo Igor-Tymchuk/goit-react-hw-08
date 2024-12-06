@@ -15,6 +15,9 @@ const style = {
   boxShadow: 24,
   margin: "2px",
   p: 2,
+  position: "sticky",
+  top: "2px",
+  zIndex: "2",
 };
 
 const AppBar = () => {

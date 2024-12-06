@@ -52,7 +52,15 @@ const ModalWindow = () => {
 
   return (
     editData && (
-      <Modal open={Boolean(editData)} onClose={handleClose}>
+      <Modal
+        open={Boolean(editData)}
+        onClose={handleClose}
+        sx={{
+          "& .MuiBackdrop-root": {
+            backgroundColor: "#fcc51233",
+          },
+        }}
+      >
         <Box sx={style}>
           <h2 className={s.title}>Contact Editor</h2>
           <Formik

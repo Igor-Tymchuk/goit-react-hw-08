@@ -31,9 +31,6 @@ const slice = createSlice({
     setDeleteData(state, action) {
       state.deleteData = action.payload;
     },
-    prepare(button) {
-      return button;
-    },
   },
   extraReducers: (builder) => {
     builder

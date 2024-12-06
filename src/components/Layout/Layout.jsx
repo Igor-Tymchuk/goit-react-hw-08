@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
 import AppBar from "../AppBar/AppBar";
 import s from "./Layout.module.css";
-import Footer from "../Footer/Footer";
 import { Toaster } from "react-hot-toast";
 import Modal from "../ModalWindow/ModalWindow";
+import PopoverComponent from "../PopoverComponent/PopoverComponent";
 
 const Layout = () => {
   return (
@@ -27,10 +27,10 @@ const Layout = () => {
         }}
       />
       <Modal />
+      <PopoverComponent />
       <main className={s.main}>
         <Outlet />
       </main>
-      <Footer />
     </>
   );
 };

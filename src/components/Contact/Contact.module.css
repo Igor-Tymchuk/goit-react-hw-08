@@ -100,9 +100,6 @@
   transition: opacity 0.3s ease-in-out;
   border-radius: 10px;
 }
-.popover {
-  background-color: #00000050;
-}
 .buttons {
   display: flex;
 }
