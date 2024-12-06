@@ -10,12 +10,6 @@
   --c-header-color: #6f3bb4;
   --c-btn-bg: #371466;
   --c-btn-bg-hover: #20083f;
-  .css-1abvrni-MuiButtonBase-root-MuiButton-root {
-    background-color: var(--c-btn-bg);
-    &:hover {
-      background-color: var(--c-btn-bg-hover);
-    }
-  }
 }
 
 html {

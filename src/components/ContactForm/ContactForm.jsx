@@ -1,4 +1,4 @@
-import { ErrorMessage, Field, Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import s from "./ContactForm.module.css";
 import { useId } from "react";
@@ -6,6 +6,7 @@ import { MdPersonAddAlt1 } from "react-icons/md";
 import { addContact } from "../../redux/contacts/operations";
 import { useDispatch } from "react-redux";
 import toast from "react-hot-toast";
+import { Button, TextField } from "@mui/material";
 
 const FeedbackSchema = Yup.object().shape({
   name: Yup.string()
@@ -44,22 +45,41 @@ const ContactForm = () => {
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
     >
-      <Form className={s.form}>
-        <div className={s.labelBox}>
-          <label htmlFor={idName}>Username</label>
-          <ErrorMessage name="name" component="span" />
-        </div>
-        <Field type="text" name="name" id={idName} className={s.input} />
-        <div className={s.labelBox}>
-          <label htmlFor={idNumber}>Phone number</label>
-          <ErrorMessage name="number" component="span" />
-        </div>
-        <Field type="text" name="number" id={idNumber} className={s.input} />
-        <button type="submit" className={s.btn}>
-          <MdPersonAddAlt1 />
-          Add contact
-        </button>
-      </Form>
+      {({ errors, touched }) => (
+        <Form className={s.form}>
+          <Field name="name" id={idName}>
+            {({ field }) => (
+              <TextField
+                error={touched.name && errors.name}
+                sx={{ width: "100%" }}
+                {...field}
+                label="Username"
+                variant="filled"
+                helperText={touched.name && errors.name ? errors.name : " "}
+              />
+            )}
+          </Field>
+          <Field name="number" id={idNumber}>
+            {({ field }) => (
+              <TextField
+                error={touched.number && errors.number}
+                sx={{ width: "100%" }}
+                {...field}
+                label="Phone number"
+                variant="filled"
+                helperText={
+                  touched.number && errors.number ? errors.number : " "
+                }
+              />
+            )}
+          </Field>
+
+          <Button type="submit" className={s.btn} variant="contained">
+            <MdPersonAddAlt1 />
+            Add contact
+          </Button>
+        </Form>
+      )}
     </Formik>
   );
 };

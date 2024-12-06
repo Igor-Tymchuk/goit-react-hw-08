@@ -3,6 +3,7 @@ import AppBar from "../AppBar/AppBar";
 import s from "./Layout.module.css";
 import Footer from "../Footer/Footer";
 import { Toaster } from "react-hot-toast";
+import Modal from "../ModalWindow/ModalWindow";
 
 const Layout = () => {
   return (
@@ -11,7 +12,7 @@ const Layout = () => {
       <Toaster
         toastOptions={{
           style: {
-            border: "1px solid black",
+            border: "1px solid white",
             color: "white",
           },
           success: {
@@ -26,6 +27,7 @@ const Layout = () => {
           },
         }}
       />
+      <Modal />
       <main className={s.main}>
         <Outlet />
       </main>

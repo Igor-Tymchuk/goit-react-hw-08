@@ -15,3 +15,4 @@ export const selectFilteredContacts = createSelector(
     );
   }
 );
+export const selectEditData = (state) => state.contacts.editData;
