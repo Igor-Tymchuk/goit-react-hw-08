@@ -5,7 +5,6 @@
   min-height: 100vh;
 }
 :root {
-  --c-bg-top: #a1a2af;
   --c-header-color: #271f6e;
 }
 
@@ -18,9 +17,8 @@ html {
 body {
   min-width: 340px;
   max-width: 1280px;
-  margin: 0 auto;
+  margin: 0 auto inherit;
   font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-  background: var(--c-bg-top);
   background-size: 400% 400%;
   animation: gradient 10s ease infinite;
   height: 100vh;

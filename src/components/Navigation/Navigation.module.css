@@ -6,3 +6,9 @@
   width: 60px;
   height: 39px;
 }
+.checkbox {
+  font-size: x-small;
+  position: absolute;
+  top: 43px;
+  left: 90px;
+}

@@ -9,25 +9,12 @@ const initialState = {
   token: null,
   isLoggedIn: false,
   isRefreshing: false,
-  showPassword: false,
-  showConfirmPwd: false,
-  checkbox: false,
 };
 
 const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    toggleShowPwd(state, action) {
-      state.showPassword = action.payload;
-    },
-    toggleShowConfirmPwd(state, action) {
-      state.showConfirmPwd = action.payload;
-    },
-    toggleCheckbox(state, action) {
-      state.checkbox = action.payload;
-    },
-  },
+
   extraReducers: (builder) => {
     builder
       .addCase(register.fulfilled, (state, action) => {
@@ -57,6 +44,5 @@ const slice = createSlice({
       });
   },
 });
-export const { toggleShowPwd, toggleShowConfirmPwd, toggleCheckbox } =
-  slice.actions;
+
 export default slice.reducer;

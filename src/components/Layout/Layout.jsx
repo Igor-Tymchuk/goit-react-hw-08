@@ -5,32 +5,65 @@ import { Toaster } from "react-hot-toast";
 import Modal from "../ModalWindow/ModalWindow";
 import PopoverComponent from "../PopoverComponent/PopoverComponent";
 
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { useEffect, useState } from "react";
+
 const Layout = () => {
+  const [themeMode, setThemeMode] = useState(false);
+
+  const changeTheme = () => {
+    setThemeMode(!themeMode);
+    localStorage.setItem("darkTheme", !themeMode);
+  };
+
+  const theme = createTheme({
+    palette: {
+      mode: themeMode ? "dark" : "light",
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            margin: "0 auto",
+          },
+        },
+      },
+    },
+  });
+
+  useEffect(() => {
+    if (JSON.parse(localStorage.getItem("darkTheme"))) setThemeMode(true);
+  }, []);
+
   return (
     <>
-      <AppBar />
-      <Toaster
-        toastOptions={{
-          style: {
-            color: "white",
-          },
-          success: {
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <AppBar changeTheme={changeTheme} />
+        <Toaster
+          toastOptions={{
             style: {
-              background: "darkgreen",
+              color: "white",
             },
-          },
-          error: {
-            style: {
-              background: "darkred",
+            success: {
+              style: {
+                background: "darkgreen",
+              },
             },
-          },
-        }}
-      />
-      <Modal />
-      <PopoverComponent />
-      <main className={s.main}>
-        <Outlet />
-      </main>
+            error: {
+              style: {
+                background: "darkred",
+              },
+            },
+          }}
+        />
+        <Modal />
+        <PopoverComponent />
+        <main className={s.main}>
+          <Outlet />
+        </main>
+      </ThemeProvider>
     </>
   );
 };

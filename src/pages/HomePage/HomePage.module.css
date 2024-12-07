@@ -1,0 +1,10 @@
+.logo {
+  width: 200px;
+  height: 200px;
+  align-self: center;
+}
+.title {
+  text-align: left;
+  padding-left: 20px;
+  margin-bottom: 20px;
+}

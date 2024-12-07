@@ -7,6 +7,7 @@ import {
   selectTotalContacts,
 } from "../../redux/contacts/selectors";
 import { selectNameFilter } from "../../redux/filters/selectors";
+import { Box, Typography } from "@mui/material";
 
 const ContactList = () => {
   const filter = useSelector(selectNameFilter);
@@ -15,16 +16,16 @@ const ContactList = () => {
   const error = useSelector(selectError);
   return !error ? (
     <div>
-      <div className={s.counter}>
-        <p className={s.total}>
+      <Box className={s.counter}>
+        <Typography className={s.total}>
           Contacts: <span>{totalCount}</span>
-        </p>
+        </Typography>
         {filter && (
-          <p className={s.found}>
+          <Typography className={s.found}>
             Found: <span>{filteredContacts.length}</span>
-          </p>
+          </Typography>
         )}
-      </div>
+      </Box>
       <ul className={s.listbox}>
         {filteredContacts.map((contact) => (
           <Contact key={contact.id} contact={contact} />

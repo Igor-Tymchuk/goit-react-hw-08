@@ -20,12 +20,12 @@ const style = {
   zIndex: "2",
 };
 
-const AppBar = () => {
+const AppBar = ({ changeTheme }) => {
   const isLogged = useSelector(selectIsLoggedIn);
   return (
     <Box sx={style}>
       <div className={s.nav}>
-        <Navigation />
+        <Navigation changeTheme={changeTheme} />
         {isLogged ? <UserMenu /> : <AuthNav />}
       </div>
     </Box>

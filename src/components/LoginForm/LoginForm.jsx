@@ -1,23 +1,23 @@
 import {
+  Box,
   Button,
-  FilledInput,
   FormControl,
   FormHelperText,
   IconButton,
   InputAdornment,
   InputLabel,
+  OutlinedInput,
   TextField,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import s from "./LoginForm.module.css";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { login } from "../../redux/auth/operations";
-import { toggleShowPwd } from "../../redux/auth/slice";
-import { selectShowPwd } from "../../redux/auth/selectors";
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { useState } from "react";
 /* eslint-disable no-useless-escape */
 const re =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -30,9 +30,24 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
 });
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  boxSizing: "border-box",
+  maxWidth: "450px",
+  minWidth: "275px",
+  width: "100%",
+  bgcolor: "background.paper",
+  borderRadius: "5px",
+  boxShadow: 24,
+  p: 2,
+};
+
 const LoginForm = () => {
   const dispatch = useDispatch();
-  const showPassword = useSelector(selectShowPwd);
+  const [password, setPassword] = useState(false);
 
   const handleSubmit = (values, action) => {
     toast.promise(dispatch(login(values)).unwrap(), {
@@ -43,10 +58,8 @@ const LoginForm = () => {
     action.resetForm();
   };
 
-  const handleShowPassword = () => dispatch(toggleShowPwd(!showPassword));
-
   return (
-    <div className={s.box}>
+    <Box sx={style}>
       <h2 className={s.title}>Login to PhoneBook</h2>
       <Formik
         onSubmit={handleSubmit}
@@ -65,7 +78,7 @@ const LoginForm = () => {
                   {...field}
                   label="Email"
                   type="email"
-                  variant="filled"
+                  variant="outlined"
                   error={Boolean(touched.email && errors.email)}
                   helperText={
                     touched.email && errors.email ? errors.email : " "
@@ -76,31 +89,22 @@ const LoginForm = () => {
             <Field name="password">
               {({ field }) => (
                 <FormControl
-                  variant="filled"
+                  variant="outlined"
                   sx={{ width: "100%" }}
                   error={Boolean(touched.password && errors.password)}
                 >
                   <InputLabel htmlFor="password">Password</InputLabel>
-                  <FilledInput
+                  <OutlinedInput
                     {...field}
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={password ? "text" : "password"}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label={
-                            showPassword
-                              ? "hide the password"
-                              : "display the password"
-                          }
-                          onClick={handleShowPassword}
+                          onClick={() => setPassword(!password)}
                           edge="end"
                         >
-                          {showPassword ? (
-                            <MdVisibilityOff />
-                          ) : (
-                            <MdVisibility />
-                          )}
+                          {password ? <MdVisibilityOff /> : <MdVisibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -124,11 +128,13 @@ const LoginForm = () => {
           </Form>
         )}
       </Formik>
-      <span className={s.span}>You don&apos;t have an account?</span>
-      <Link to="/register">
-        <Button variant="contained">Register</Button>
-      </Link>
-    </div>
+      <div className={s.box}>
+        <span className={s.span}>You don&apos;t have an account?</span>
+        <Link to="/register">
+          <Button variant="contained">Register</Button>
+        </Link>
+      </div>
+    </Box>
   );
 };
 export default LoginForm;

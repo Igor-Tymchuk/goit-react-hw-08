@@ -9,25 +9,18 @@ import {
   InputLabel,
   TextField,
   FormHelperText,
+  Box,
 } from "@mui/material";
 import { Field, Form, Formik } from "formik";
 import s from "./RegistrationForm.module.css";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { register } from "../../redux/auth/operations";
-import {
-  toggleCheckbox,
-  toggleShowConfirmPwd,
-  toggleShowPwd,
-} from "../../redux/auth/slice";
-import {
-  selectCheckbox,
-  selectShowConfirmPwd,
-  selectShowPwd,
-} from "../../redux/auth/selectors";
+
 import toast from "react-hot-toast";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
+import { useState } from "react";
 /* eslint-disable no-useless-escape */
 const re =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -48,8 +41,25 @@ const FeedbackSchema = Yup.object().shape({
     .required("Required"),
 });
 
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  boxSizing: "border-box",
+  maxWidth: "450px",
+  minWidth: "275px",
+  width: "100%",
+  bgcolor: "background.paper",
+  borderRadius: "5px",
+  boxShadow: 24,
+  p: 2,
+};
 const RegistrationForm = () => {
   const dispatch = useDispatch();
+  const [password, setPassword] = useState(false);
+  const [confirmPwd, setConfirmPwd] = useState(false);
+  const [checkbox, setCheckbox] = useState(false);
 
   const handleSubmit = (values, action) => {
     if (values.password !== values.confirmPwd)
@@ -62,20 +72,11 @@ const RegistrationForm = () => {
       error: <b>User creation error!</b>,
     });
     action.resetForm();
-    dispatch(toggleCheckbox(!checkbox));
+    setCheckbox(!checkbox);
   };
 
-  const showPassword = useSelector(selectShowPwd);
-  const showConfirmPwd = useSelector(selectShowConfirmPwd);
-  const checkbox = useSelector(selectCheckbox);
-
-  const handleShowPassword = () => dispatch(toggleShowPwd(!showPassword));
-  const handleShowConfirmPwd = () =>
-    dispatch(toggleShowConfirmPwd(!showConfirmPwd));
-  const handleCheckbox = () => dispatch(toggleCheckbox(!checkbox));
-
   return (
-    <div className={s.box}>
+    <Box sx={style}>
       <h2 className={s.title}>Register a new account</h2>
       <Formik
         onSubmit={handleSubmit}
@@ -127,23 +128,14 @@ const RegistrationForm = () => {
                   <OutlinedInput
                     {...field}
                     id="password"
-                    type={showPassword ? "text" : "password"}
+                    type={password ? "text" : "password"}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label={
-                            showPassword
-                              ? "hide the password"
-                              : "display the password"
-                          }
-                          onClick={handleShowPassword}
+                          onClick={() => setPassword(!password)}
                           edge="end"
                         >
-                          {showPassword ? (
-                            <MdVisibilityOff />
-                          ) : (
-                            <MdVisibility />
-                          )}
+                          {password ? <MdVisibilityOff /> : <MdVisibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -168,23 +160,14 @@ const RegistrationForm = () => {
                   <OutlinedInput
                     {...field}
                     id="confirmPwd"
-                    type={showConfirmPwd ? "text" : "password"}
+                    type={confirmPwd ? "text" : "password"}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
-                          aria-label={
-                            showConfirmPwd
-                              ? "hide the password"
-                              : "display the password"
-                          }
-                          onClick={handleShowConfirmPwd}
+                          onClick={() => setConfirmPwd(!confirmPwd)}
                           edge="end"
                         >
-                          {showConfirmPwd ? (
-                            <MdVisibilityOff />
-                          ) : (
-                            <MdVisibility />
-                          )}
+                          {confirmPwd ? <MdVisibilityOff /> : <MdVisibility />}
                         </IconButton>
                       </InputAdornment>
                     }
@@ -204,8 +187,16 @@ const RegistrationForm = () => {
                   {...field}
                   value="end"
                   checked={checkbox}
-                  control={<Checkbox onClick={handleCheckbox} />}
-                  label="I agree to the user rules!"
+                  control={<Checkbox onClick={() => setCheckbox(!checkbox)} />}
+                  label={
+                    <span>
+                      I agree to the&nbsp;
+                      <Link to="/#policy" className={s.policy}>
+                        Terms and Conditions
+                      </Link>
+                      !
+                    </span>
+                  }
                   labelPlacement="end"
                 />
               )}
@@ -221,11 +212,13 @@ const RegistrationForm = () => {
           </Form>
         )}
       </Formik>
-      <span className={s.span}>Already have an account?</span>
-      <Link to="/login">
-        <Button variant="contained">Sign in</Button>
-      </Link>
-    </div>
+      <div className={s.box}>
+        <span className={s.span}>Already have an account?</span>
+        <Link to="/login">
+          <Button variant="contained">Sign in</Button>
+        </Link>
+      </div>
+    </Box>
   );
 };
 export default RegistrationForm;
