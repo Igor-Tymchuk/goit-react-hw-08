@@ -37,11 +37,11 @@ const ModalWindow = () => {
   const dispatch = useDispatch();
   const editData = useSelector(selectEditData);
   const handleClose = () => dispatch(setEditData(null));
-  const handleEdit = (values, actions) => {
+  const handleEdit = async (values, actions) => {
     if (editData.name === values.name && editData.number === values.number) {
       return toast.error("You did not edit...");
     }
-    toast.promise(dispatch(editContact(values)).unwrap(), {
+    await toast.promise(dispatch(editContact(values)).unwrap(), {
       loading: "Editing...",
       success: <b>The contact was successfully edited.</b>,
       error: <b>Error! Could not edit.</b>,

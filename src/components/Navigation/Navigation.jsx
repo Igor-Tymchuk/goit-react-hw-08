@@ -2,10 +2,12 @@ import { FormControlLabel, ListItemButton, Switch } from "@mui/material";
 import clsx from "clsx";
 import { NavLink } from "react-router-dom";
 import s from "./Navigation.module.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectIsLoggedIn } from "../../redux/auth/selectors";
 import { FcBusinessContact } from "react-icons/fc";
 import styled from "@emotion/styled";
+import { selectTheme } from "../../redux/common/selectors";
+import { changeTheme } from "../../redux/common/slice";
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
@@ -63,8 +65,15 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Navigation = ({ changeTheme }) => {
+const Navigation = () => {
+  const dispatch = useDispatch();
   const isLogged = useSelector(selectIsLoggedIn);
+  const darkTheme = useSelector(selectTheme);
+
+  const toggleTheme = () => {
+    dispatch(changeTheme(!darkTheme));
+  };
+
   const linkNav = ({ isActive }) => {
     return clsx(isActive && s.active);
   };
@@ -74,8 +83,8 @@ const Navigation = ({ changeTheme }) => {
       <FcBusinessContact className={s.logo} />
 
       <FormControlLabel
-        onClick={changeTheme}
-        checked={JSON.parse(localStorage.getItem("darkTheme"))}
+        onClick={() => toggleTheme()}
+        checked={darkTheme}
         control={<MaterialUISwitch />}
       />
 

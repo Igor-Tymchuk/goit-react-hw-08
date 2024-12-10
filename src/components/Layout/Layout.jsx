@@ -7,19 +7,14 @@ import PopoverComponent from "../PopoverComponent/PopoverComponent";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { selectTheme } from "../../redux/common/selectors";
 
 const Layout = () => {
-  const [themeMode, setThemeMode] = useState(false);
-
-  const changeTheme = () => {
-    setThemeMode(!themeMode);
-    localStorage.setItem("darkTheme", !themeMode);
-  };
-
+  const darkTheme = useSelector(selectTheme);
   const theme = createTheme({
     palette: {
-      mode: themeMode ? "dark" : "light",
+      mode: darkTheme ? "dark" : "light",
     },
     components: {
       MuiCssBaseline: {
@@ -32,15 +27,11 @@ const Layout = () => {
     },
   });
 
-  useEffect(() => {
-    if (JSON.parse(localStorage.getItem("darkTheme"))) setThemeMode(true);
-  }, []);
-
   return (
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
-        <AppBar changeTheme={changeTheme} />
+        <AppBar />
         <Toaster
           toastOptions={{
             style: {
